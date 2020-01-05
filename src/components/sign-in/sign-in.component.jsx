@@ -1,5 +1,5 @@
 import React from 'react';
-import './sign-in.style.scss';
+import './sign-in.styles.scss';
 import { render } from '@testing-library/react';
 
 class SignIn extends React.Component {
