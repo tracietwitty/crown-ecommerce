@@ -7,7 +7,7 @@ import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import SignInSignUp from './pages/signin-signup/signin-signup.component';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
-import { setCurrentUser } from './redux/user/user.reducer';
+import { setCurrentUser } from './redux/user/user.actions';
 
 class App extends React.Component {
 	unsubscribeFromAuth = null;
@@ -34,7 +34,7 @@ class App extends React.Component {
 				});
 			}
 			//set user to "null" if they log out
-			setCurrentUser({ currentUser: userAuth });
+			setCurrentUser(userAuth);
 		});
 	}
 
