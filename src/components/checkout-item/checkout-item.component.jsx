@@ -1,7 +1,7 @@
 import React from 'react';
 import './checkout-item.styles.scss';
 
-const CheckoutItem = ({ cartItem: { name, imageUrl, price, quantity } }) => (
+const CheckoutItem = ({ cartItem: { name, imgUrl, price, quantity } }) => (
 	<div className='checkout-item'>
 		<div className='image-container'>
 			<img src={imgUrl} alt='item' />
