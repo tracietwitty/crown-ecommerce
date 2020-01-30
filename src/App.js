@@ -20,7 +20,7 @@ class App extends React.Component {
 		this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
 			if (userAuth) {
 				const userRef = await createUserProfileDocument(userAuth);
-				//check if the db has updated at that ref (has the snapShot changed)
+				//check if the db has updated at that ref (has the snapshot changed)
 				userRef.onSnapshot(snapShot => {
 					setCurrentUser(
 						{
