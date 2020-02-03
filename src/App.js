@@ -8,36 +8,34 @@ import ShopPage from './pages/shop/shop.component';
 import CheckoutPage from './pages/checkout/checkout.component';
 import Header from './components/header/header.component';
 import SignInSignUp from './pages/signin-signup/signin-signup.component';
-import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import {
+	auth,
+	createUserProfileDocument,
+	addCollectionAndDocuments
+} from './firebase/firebase.utils';
 import { setCurrentUser } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selector';
+import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 
 class App extends React.Component {
 	unsubscribeFromAuth = null;
 
 	componentDidMount() {
-		const { setCurrentUser } = this.props;
+		const { setCurrentUser, collectionsArray } = this.props;
 		this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
 			if (userAuth) {
 				const userRef = await createUserProfileDocument(userAuth);
 				//check if the db has updated at that ref (has the snapshot changed)
 				userRef.onSnapshot(snapShot => {
-					setCurrentUser(
-						{
-							currentUser: {
-								id: snapShot.id,
-								...snapShot.data()
-							}
-						},
-						() => {
-							//double-check your work
-							console.log(this.state);
-						}
-					);
+					setCurrentUser({
+						id: snapShot.id,
+						...snapShot.data()
+					});
 				});
 			}
 			//set user to "null" if they log out
 			setCurrentUser(userAuth);
+			addCollectionAndDocuments('collections', collectionsArray);
 		});
 	}
 
@@ -67,7 +65,8 @@ class App extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-	currentUser: selectCurrentUser
+	currentUser: selectCurrentUser,
+	collectionsArray: selectCollectionsForPreview
 });
 
 const mapDispatchToProps = dispatch => ({
